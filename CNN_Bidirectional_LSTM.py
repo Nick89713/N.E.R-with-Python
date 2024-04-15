@@ -201,16 +201,16 @@ if __name__ == "__main__":
                                                 unroll = True))(concatenated_embeddings)
         flattened_embeddings = Flatten()(BidirectionalLSTM_embeddings)
 
-        dense_layer_output = Dense(units = n_tags + 1,           
-                                        activation = "sigmoid",
-                                        use_bias = True,
-                                        kernel_initializer = "glorot_uniform",
-                                        bias_initializer = "zeros",
-                                        kernel_regularizer = l2(dense_layer_regularization_strength),
-                                        bias_regularizer = l2(dense_layer_regularization_strength),
-                                        activity_regularizer = None,
-                                        kernel_constraint = None,
-                                        bias_constraint = None)(flattened_embeddings)
+        dense_layer_output = Dense(units = max_word_len,           
+                                    activation = "sigmoid",
+                                    use_bias = True,
+                                    kernel_initializer = "glorot_uniform",
+                                    bias_initializer = "zeros",
+                                    kernel_regularizer = l2(dense_layer_regularization_strength),
+                                    bias_regularizer = l2(dense_layer_regularization_strength),
+                                    activity_regularizer = None,
+                                    kernel_constraint = None,
+                                    bias_constraint = None)(flattened_embeddings)
         
         model = Model(inputs = [word_input,char_input],     
                     outputs = dense_layer_output)
@@ -230,7 +230,7 @@ if __name__ == "__main__":
                                     lstm_layer_regularization_strength = 0.3,
                                     dense_layer_regularization_strength = 0.3)
     model.compile(optimizer = "adam", 
-                  loss = "sparse_categorical_crossentropy", 
+                  loss = "sparse_categorical_crossentropy", # TODO fix loss function
                   metrics = [F1Score()])                                     
     model.summary()
    
