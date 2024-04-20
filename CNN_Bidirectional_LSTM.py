@@ -12,6 +12,8 @@ from keras.initializers import he_uniform, glorot_uniform, orthogonal
 from keras.callbacks import EarlyStopping
 from keras.metrics import F1Score
 from keras.src.engine.functional import Functional
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
 
 from time import time
 
