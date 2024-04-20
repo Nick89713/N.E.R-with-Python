@@ -106,6 +106,12 @@ if __name__ == "__main__":
                       value = tag2idx["PAD"], 
                       padding = 'post', 
                       truncating = 'post')
+    
+    # pairs_array = [[(index, value) for index, value in enumerate(row)] for row in y]
+    # flattened_pairs = [pair for row in pairs_array for pair in row]
+    # unique_pairs = set(flattened_pairs)
+    # pair_to_integer = {pair: i for i, pair in enumerate(unique_pairs)}
+    # integer_pairs_array = [[pair_to_integer[pair] for pair in row] for row in pairs_array]
 
     # train-test split at word level & char. level. Targets remain the same!
     X_word = X_word.astype(np.float64)
@@ -120,14 +126,15 @@ if __name__ == "__main__":
                                                   random_state = 2018)
 
     # fix shapes
-    # X_char_tr = np.array(X_char_tr).reshape((len(X_char_tr), max_len, max_len_char))
-    #y_tr =  np.array(y_tr).reshape(len(y_tr), max_len, 1)
+    X_char_tr = np.array(X_char_tr).reshape((len(X_char_tr), max_len, max_len_char))
+    y_tr =  np.array(y_tr).reshape(len(y_tr), max_len, 1)
 
 # endregion - Preprocessing
     
 
     def ConvBidirectionalLSTM(
-        X_train : np.ndarray, 
+        X_train : np.ndarray,
+        num_of_classes: int, 
         max_word_len : int,
         number_of_words : int,
         embedding_layer_output_dim : int,
@@ -199,9 +206,10 @@ if __name__ == "__main__":
                                                 go_backwards = False,           
                                                 stateful = False,                
                                                 unroll = True))(concatenated_embeddings)
-        flattened_embeddings = Flatten()(BidirectionalLSTM_embeddings)
+        # flattened_embeddings = Flatten()(BidirectionalLSTM_embeddings)
 
-        dense_layer_output = Dense(units = max_word_len,           
+        dense_layer_output = TimeDistributed(
+                                    Dense(units = num_of_classes,           
                                     activation = "sigmoid",
                                     use_bias = True,
                                     kernel_initializer = "glorot_uniform",
@@ -210,7 +218,7 @@ if __name__ == "__main__":
                                     bias_regularizer = l2(dense_layer_regularization_strength),
                                     activity_regularizer = None,
                                     kernel_constraint = None,
-                                    bias_constraint = None)(flattened_embeddings)
+                                    bias_constraint = None))(BidirectionalLSTM_embeddings)
         
         model = Model(inputs = [word_input,char_input],     
                     outputs = dense_layer_output)
@@ -218,6 +226,7 @@ if __name__ == "__main__":
         return model
     
     model = ConvBidirectionalLSTM(  X_train = X_char_tr,
+                                    num_of_classes = n_tags + 1,
                                     max_word_len = max_len,
                                     number_of_words = n_words,
                                     embedding_layer_output_dim = 20,
@@ -231,8 +240,8 @@ if __name__ == "__main__":
                                     dense_layer_regularization_strength = 0.3)
     model.compile(optimizer = "adam", 
                   loss = "sparse_categorical_crossentropy", # TODO fix loss function
-                  metrics = [F1Score()])                                     
-    model.summary()
+                  metrics = ["acc"] )                                  
+    # model.summary()
    
 
 
