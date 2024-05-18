@@ -1,19 +1,13 @@
 import pandas as pd
 import numpy as np
-# from typing import List
 import matplotlib.pyplot as plt
-# import tensorflow as tf
+
 
 from sklearn.model_selection import train_test_split
 from keras.preprocessing.sequence import pad_sequences
-# from keras.models import Model
-# from keras.layers import Reshape,Input, Flatten, LSTM, GlobalMaxPooling2D, Embedding, Dense, TimeDistributed, Bidirectional, concatenate, SpatialDropout1D, Conv2D, PReLU, BatchNormalization
-# from keras.regularizers import l2
-# from keras.initializers import he_uniform, glorot_uniform, orthogonal
+
 from keras.callbacks import EarlyStopping
-# from keras.metrics import F1Score
-# from keras.src.engine.functional import Functional
-# from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
 
 
 from project_helpers.Sentence_Getter import SentenceGetter
@@ -129,7 +123,7 @@ if __name__ == "__main__":
     
     model.compile(optimizer = "adam", 
                   loss = "sparse_categorical_crossentropy",
-                  metrics = ["acc"] )                                  
+                  metrics = ["acc"] )                             # TODO : precisio, recall      
 # region - Build Model 
    
 # region - Train                                                            
@@ -151,7 +145,7 @@ if __name__ == "__main__":
     hist = pd.DataFrame(history.history)
 
     # TODO visualize properly
-    visualize_model_history(hist = hist, columns = 'all')
+
 
     # TODO predict
     

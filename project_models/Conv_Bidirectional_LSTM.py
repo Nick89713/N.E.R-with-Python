@@ -116,34 +116,3 @@ class ConvBidirectionalLSTM():
         model = Model(inputs = [word_input,char_input],     
                     outputs = dense_layer_output)
         return model
-        
-
-
-def visualize_model_history(hist: pd.DataFrame, columns: Union[List[str], str]):
-    if( columns == 'all'):
-        cols = hist.columns
-    else:
-        cols = columns 
-    fig, axs = plt.subplots(1, len(cols), figsize = (10,6))
-    fig.tight_layout(pad = 4, w_pad = 2)
-    for i, ax in enumerate(axs):
-        ax.plot(hist.index,hist[cols[i]])
-        ax.axis('tight')
-        ax.set_ylabel(hist.columns[i])
-        ax.set_xlabel('Epochs')
-
-        ax.yaxis.set_major_locator(MultipleLocator(0.01)) 
-        ax.yaxis.set_major_formatter(FormatStrFormatter('%.4f'))
-
-        ax.yaxis.set_minor_locator(AutoMinorLocator(4))
-        ax.yaxis.set_major_formatter(FormatStrFormatter('%.4f'))
-
-        ax.tick_params(axis = 'y', 
-                       which = 'major',
-                       direction = 'inout',
-                       length = 8.0,
-                       width = 0.5, 
-                       color = 'black')
-        ax.grid(linestyle = '-', color = 'b')
-
-        # TODO add point
