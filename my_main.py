@@ -1,23 +1,14 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-
-
 from sklearn.model_selection import train_test_split
 from keras.preprocessing.sequence import pad_sequences
-
 from keras.callbacks import EarlyStopping
 
-
-
 from project_helpers.Sentence_Getter import SentenceGetter
-from project_models.Conv_Bidirectional_LSTM import ConvBidirectionalLSTM, visualize_model_history
-
-
+from project_models.Conv_Bidirectional_LSTM import ConvBidirectionalLSTM
 
 from time import time
-
-
 
 if __name__ == "__main__":
 # region - Load Data
