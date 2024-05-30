@@ -1,7 +1,5 @@
-# import pandas as pd
-# from typing import List
-
-from .__init__ import *
+import pandas as pd
+from typing import List
 
 class SentenceGetter(object):
     

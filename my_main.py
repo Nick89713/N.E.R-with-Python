@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from keras.preprocessing.sequence import pad_sequences
 from keras.callbacks import EarlyStopping
+from keras.metrics import Precision,Recall, Accuracy
+from custom_metrics.micro_metrics import micro_f1,micro_precision,micro_recall
 
 from project_helpers.Sentence_Getter import SentenceGetter
 from project_models.Conv_Bidirectional_LSTM import ConvBidirectionalLSTM
@@ -111,10 +113,9 @@ if __name__ == "__main__":
                                 lstm_recurrent_dropout_rate = 0.3,
                                 lstm_layer_regularization_strength = 0.3,
                                 dense_layer_regularization_strength = 0.3).model
-    
     model.compile(optimizer = "adam", 
                   loss = "sparse_categorical_crossentropy",
-                  metrics = ["acc"] )                             # TODO : precisio, recall      
+                  metrics = ["accuracy", micro_f1, micro_precision,micro_recall])                
 # region - Build Model 
    
 # region - Train                                                            
@@ -124,7 +125,7 @@ if __name__ == "__main__":
                     y = y_tr,
                     shuffle = True,
                     initial_epoch = 0,
-                    epochs = 5,                          # In each epoch, iterate over all training samples, performing ceil(N/B) iterations.             
+                    epochs = 2,                           # In each epoch, iterate over all training samples, performing ceil(N/B) iterations.             
                     batch_size = 32,                      # In each iteration, process B samples, where B = batch_size
                     validation_split = 0.1,               # Percent of training data used for validation during each epoch
                     verbose = 1,
@@ -135,9 +136,10 @@ if __name__ == "__main__":
                     callbacks = [early_stopping])
     hist = pd.DataFrame(history.history)
 
+    # hist.to_csv("C:\\Users\\Hp\\Desktop\\ML Projects\\models_history\\hist.csv")
+    # model.save("C:\\Users\\Hp\\Desktop\\ML Projects\\trained_models")
+
     # TODO visualize properly
-
-
     # TODO predict
     
 #     plt.style.use("ggplot")
