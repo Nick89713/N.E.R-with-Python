@@ -11,7 +11,7 @@ from keras.src.engine.functional import Functional
 
 class ConvBidirectionalLSTM():
     def __init__(self,
-                X_train : np.ndarray,
+                X_char_train_shape:tuple,
                 num_of_classes: int, 
                 max_word_len : int,
                 number_of_words : int,
@@ -25,7 +25,7 @@ class ConvBidirectionalLSTM():
                 lstm_layer_regularization_strength : float,
                 dense_layer_regularization_strength : float
     ):
-        self.X_train = X_train
+        self.X_char_train_shape = X_char_train_shape
         self.num_of_classes = num_of_classes
         self.max_word_len = max_word_len
         self.number_of_words = number_of_words
@@ -49,7 +49,7 @@ class ConvBidirectionalLSTM():
                             input_length = self.max_word_len,             
                             mask_zero = True)(word_input)    
        
-        char_input_shape = (*self.X_train.shape[1:],1)
+        char_input_shape = (*self.X_char_train_shape,1)
         char_input = Input(shape = char_input_shape)
         char_input_reshaped = Reshape((*char_input_shape, 1))(char_input)
        

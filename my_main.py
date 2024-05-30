@@ -100,7 +100,7 @@ if __name__ == "__main__":
 # endregion - Preprocessing
     
 # region - Build Model 
-    model = ConvBidirectionalLSTM(X_train = X_char_tr,
+    model = ConvBidirectionalLSTM(X_char_train_shape = X_char_tr.shape[1:],
                                 num_of_classes = n_tags + 1,
                                 max_word_len = max_len,
                                 number_of_words = n_words,
